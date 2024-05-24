@@ -1,5 +1,6 @@
 import { AudioPlayer, VoiceConnection } from "@discordjs/voice";
 import { VoiceBasedChannel } from "discord.js";
+import { Readable } from "stream";
 
 export type VoiceSession = {
     vc: VoiceConnection | null,
@@ -7,6 +8,7 @@ export type VoiceSession = {
     channel: VoiceBasedChannel | null,
     queue: string[],
     workerInterval: NodeJS.Timeout | null,
+    recentStream: Readable | null,
 };
 
 export const voiceSession: VoiceSession = {
@@ -15,4 +17,5 @@ export const voiceSession: VoiceSession = {
     channel: null,
     queue: [],
     workerInterval: null,
+    recentStream: null,
 };

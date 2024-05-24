@@ -24,6 +24,7 @@ model Dictionary {
   reading String
 
   @@index([user_id])
+  @@map("dictionaries")
 }
 
 // 読み上げに使うニックネーム。ユーザーごとに設定できる
@@ -33,6 +34,8 @@ model Nickname {
 
   // ニックネーム
   nickname String
+
+  @@map("nicknames")
 }
 
 // ユーザーごとの設定
@@ -41,11 +44,13 @@ model UserPreference {
   user_id String @id
 
   // 話者ID
-  voice_spaker_id Int
+  voice_spaker_id Int @default(0)
 
   // 読み上げの速度
-  voice_speed Float
+  voice_speed Float @default(1.0)
 
   // 読み上げのピッチ
-  voice_pitch Float
+  voice_pitch Float @default(1.0)
+
+  @@map("user_preferences")
 }

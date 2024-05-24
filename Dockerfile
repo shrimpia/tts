@@ -20,4 +20,4 @@ RUN pnpm install
 
 USER node
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["pnpm", "start"]

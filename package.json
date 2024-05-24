@@ -6,7 +6,9 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch --onSuccess \"node dist/index.js\""
+    "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
+    "migrate:generate": "prisma migrate dev --name",
+    "migrate:up": "prisma migrate dev"
   },
   "tsup": {
     "format": ["esm"],

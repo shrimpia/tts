@@ -1,3 +1,4 @@
+import { voiceSession } from "@/voice-session.js";
 import { BotCommand } from "../models/bot-command.js";
 import { joinVC } from "../services/join-vc.js";
 
@@ -20,6 +21,8 @@ export const joinCommand: BotCommand = {
 
         
         await interaction.deferReply();
+
+        voiceSession.queue.length = 0;
 
         await joinVC(interaction.guild, interaction.channel);
         

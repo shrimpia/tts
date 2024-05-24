@@ -7,6 +7,8 @@ services:
     volumes:
       - .:/app:cached
     tty: true
+    environment:
+      TZ: "Asia/Tokyo"
   db:
     image: postgres:16.2
     ports:
