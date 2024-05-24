@@ -21,6 +21,8 @@ export const ttsWorker = async () => {
         return;
     }
 
+    voiceSession.recentStream?.destroy();
+
     // キューから取り出して再生
     const text = queue.shift();
     if (text === undefined) {
