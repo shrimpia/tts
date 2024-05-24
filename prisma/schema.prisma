@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 辞書データ。ユーザーごとに登録できる。グローバル辞書は管理者限定で登録できる
+model Dictionary {
+  id String @id @default(uuid())
+  // この辞書を登録したユーザーのDiscord ID。nullであればグローバル辞書となり、全員に反映される
+  user_id String?
+  // 単語
+  word String
+  // 読み
+  reading String
+
+  @@index([user_id])
+}
+
+// 読み上げに使うニックネーム。ユーザーごとに設定できる
+model Nickname {
+  // ユーザーのDiscord ID
+  user_id String @id
+
+  // ニックネーム
+  nickname String
+}
+
+// ユーザーごとの設定
+model UserPreference {
+  // ユーザーのDiscord ID
+  user_id String @id
+
+  // 話者ID
+  voice_spaker_id Int
+
+  // 読み上げの速度
+  voice_speed Float
+
+  // 読み上げのピッチ
+  voice_pitch Float
+}

@@ -1,0 +1,17 @@
+{
+    "name": "shrimpia-tts",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/app",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "Prisma.prisma",
+                "ipatalas.vscode-postfix-ts",
+                "ckolkman.vscode-postgres",
+                "rangav.vscode-thunder-client"
+            ]
+        }
+    }
+}
