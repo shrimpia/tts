@@ -74,8 +74,13 @@ client.on('messageCreate', async (message) => {
 client.on('voiceStateUpdate', async (oldState, newState) => {
   if (!voiceSession.player || !voiceSession.vc || !voiceSession.channel) return;
 
+  const currentChannelId = voiceSession.channel.id;
+
+  // 新旧どちらも現在のチャンネルにいる場合は無視
+  if (oldState.channelId === currentChannelId && newState.channelId === currentChannelId) return;
+
   // チャンネルに参加したとき
-  if (newState.channelId === voiceSession.channel.id && newState.member) {
+  if (newState.channelId === currentChannelId && newState.member) {
     const name = await filterContent(await getReadableName(newState.member));
     Log.info(`${name} joined the channel`);
     voiceSession.queue.push(`${name}が来ました`);
