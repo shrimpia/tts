@@ -10,7 +10,8 @@
                 "Prisma.prisma",
                 "ipatalas.vscode-postfix-ts",
                 "ckolkman.vscode-postgres",
-                "rangav.vscode-thunder-client"
+                "rangav.vscode-thunder-client",
+                "ms-azuretools.vscode-docker"
             ]
         }
     }

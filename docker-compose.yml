@@ -6,6 +6,7 @@ services:
       - "3000:3000"
     volumes:
       - .:/app:cached
+      - node-modules:/app/node_modules
     tty: true
     environment:
       TZ: "Asia/Tokyo"
@@ -26,3 +27,4 @@ services:
 
 volumes:
   db-store:
+  node-modules:
