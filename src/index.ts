@@ -46,7 +46,10 @@ client.on('messageCreate', async (message) => {
   if (!voiceSession.player || !voiceSession.vc) return;
   if (voiceSession.vc.joinConfig.channelId !== message.channelId) return;
 
+  if (message.content.startsWith(';')) return;
+
   let content = await filterContent(message.content, message.channel);
+
 
   // 添付ファイルについても読み上げる
   if (message.attachments.size > 1) {
