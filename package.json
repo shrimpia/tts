@@ -7,14 +7,20 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
+    "start": "tsup && node dist/index.js",
+    "test": "vitest",
     "migrate:generate": "prisma migrate dev --name",
     "migrate:up": "prisma migrate dev"
   },
   "tsup": {
-    "format": ["esm"],
+    "format": [
+      "esm"
+    ],
     "minify": true,
     "dts": false,
-    "entry": ["src/index.ts"]
+    "entry": [
+      "src/index.ts"
+    ]
   },
   "dependencies": {
     "@discordjs/voice": "^0.17.0",
@@ -31,7 +37,9 @@
     "prisma": "^5.14.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.0.2",
-    "tsx": "^4.10.5"
+    "tsx": "^4.10.5",
+    "vite": "^5.3.1",
+    "vitest": "^1.6.0"
   },
   "packageManager": "pnpm@9.1.2"
 }
