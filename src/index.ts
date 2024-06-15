@@ -45,7 +45,7 @@ client.on('messageCreate', async (message) => {
   if (!voiceSession.player || !voiceSession.vc) return;
   if (voiceSession.vc.joinConfig.channelId !== message.channelId) return;
 
-  let content = filterContent(message.content, message.channel);
+  let content = await filterContent(message.content, message.channel);
 
   // 添付ファイルについても読み上げる
   if (message.attachments.size > 1) {
@@ -67,13 +67,13 @@ client.on('messageCreate', async (message) => {
 });
 
 // VC参加/退出の処理
-client.on('voiceStateUpdate', (oldState, newState) => {
+client.on('voiceStateUpdate', async (oldState, newState) => {
   if (!voiceSession.player || !voiceSession.vc) return;
 
   // チャンネルに参加したとき
   if (oldState.channelId === null && newState.channelId !== null) {
     if (newState.channelId !== voiceSession.vc.joinConfig.channelId) return;
-    const name = filterContent(newState.member?.nickname ?? newState.member?.displayName ?? '');
+    const name = await filterContent(newState.member?.nickname ?? newState.member?.displayName ?? '');
     Log.info(`${name} joined the channel`);
     voiceSession.queue.push(`${name}さんが来ました`);
     return;
@@ -81,7 +81,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   // チャンネルから退出したとき
   if (newState.channelId === null && oldState.channelId !== null) {
     if (oldState.channelId !== voiceSession.vc.joinConfig.channelId) return;
-    const name = filterContent(oldState.member?.nickname ?? oldState.member?.displayName ?? '');
+    const name = await filterContent(oldState.member?.nickname ?? oldState.member?.displayName ?? '');
     Log.info(`${name} left the channel`);
     voiceSession.queue.push(`${name}さんが退出しました`);
     return;
@@ -90,7 +90,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   // 寝落ち部屋に飛んだとき
   if (newState.channelId === '1083261589525909524' && oldState.channelId !== null) {
     if (oldState.channelId !== voiceSession.vc.joinConfig.channelId) return;
-    const name = filterContent(oldState.member?.nickname ?? oldState.member?.displayName ?? '');
+    const name = await filterContent(oldState.member?.nickname ?? oldState.member?.displayName ?? '');
     Log.info(`${name} left the channel`);
     voiceSession.queue.push(`${name} 寝落ち～`);
     return;
