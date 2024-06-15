@@ -8,6 +8,7 @@ import { filterContent } from './services/filter-content.js';
 import { joinVC } from './services/join-vc.js';
 import { getFileTypeToRead } from './services/get-file-type-to-read.js';
 import { Log } from './log.js';
+import { getReadableName } from './services/get-readable-name.js';
 
 const client = new Client({
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
@@ -68,31 +69,29 @@ client.on('messageCreate', async (message) => {
 
 // VC参加/退出の処理
 client.on('voiceStateUpdate', async (oldState, newState) => {
-  if (!voiceSession.player || !voiceSession.vc) return;
+  if (!voiceSession.player || !voiceSession.vc || !voiceSession.channel) return;
 
   // チャンネルに参加したとき
-  if (oldState.channelId === null && newState.channelId !== null) {
-    if (newState.channelId !== voiceSession.vc.joinConfig.channelId) return;
-    const name = await filterContent(newState.member?.nickname ?? newState.member?.displayName ?? '');
+  if (newState.channelId === voiceSession.channel.id && newState.member) {
+    const name = await filterContent(await getReadableName(newState.member));
     Log.info(`${name} joined the channel`);
-    voiceSession.queue.push(`${name}さんが来ました`);
-    return;
-  }
-  // チャンネルから退出したとき
-  if (newState.channelId === null && oldState.channelId !== null) {
-    if (oldState.channelId !== voiceSession.vc.joinConfig.channelId) return;
-    const name = await filterContent(oldState.member?.nickname ?? oldState.member?.displayName ?? '');
-    Log.info(`${name} left the channel`);
-    voiceSession.queue.push(`${name}さんが退出しました`);
+    voiceSession.queue.push(`${name}が来ました`);
     return;
   }
 
   // 寝落ち部屋に飛んだとき
-  if (newState.channelId === '1083261589525909524' && oldState.channelId !== null) {
-    if (oldState.channelId !== voiceSession.vc.joinConfig.channelId) return;
-    const name = await filterContent(oldState.member?.nickname ?? oldState.member?.displayName ?? '');
+  if (newState.channelId === '1083261589525909524' && oldState.channelId === voiceSession.channel.id && oldState.member) {
+    const name = await filterContent(await getReadableName(oldState.member));
     Log.info(`${name} left the channel`);
-    voiceSession.queue.push(`${name} 寝落ち～`);
+    voiceSession.queue.push(`${name}寝落ち～`);
+    return;
+  }
+
+  // チャンネルから退出したとき
+  if (oldState.channelId === voiceSession.channel.id && oldState.member) {
+    const name = await filterContent(await getReadableName(oldState.member));
+    Log.info(`${name} left the channel`);
+    voiceSession.queue.push(`${name}が退出しました`);
     return;
   }
 });
